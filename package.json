@@ -1,0 +1,44 @@
+{
+  "name": "multi-tenancy-be",
+  "version": "0.1.0",
+  "private": true,
+  "engines": {
+    "node": "20.11.0"
+  },
+  "packageManager": "npm@10.2.4",
+  "scripts": {
+    "build": "tsc --noEmit false",
+    "dev": "node --env-file=.env --import tsx --watch src/app.ts",
+    "format": "prettier --write \"./**/*.{js,ts,md}\"",
+    "lint": "run-s -c lint:*",
+    "lint:eslint": "eslint \"src/**/*.ts\"",
+    "lint:tsc": "tsc --noEmit",
+    "lint-fix": "eslint \"src/**/*.ts\" --fix",
+    "start": "pm2 start \"./ecosystem.config.cjs\""
+  },
+  "dependencies": {
+    "@aws-sdk/client-cognito-identity-provider": "^3.496.0",
+    "aws-jwt-verify": "^4.0.0",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "jwt-decode": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/cookie-parser": "^1.4.6",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.11.5",
+    "@typescript-eslint/eslint-plugin": "^6.19.1",
+    "@typescript-eslint/parser": "^6.19.1",
+    "eslint": "^8.56.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-airbnb-typescript": "^17.1.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^3.2.4",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3"
+  }
+}
