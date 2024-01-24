@@ -10,7 +10,7 @@ const app = express();
 app.use(
   cookieParser(),
   cors({
-    origin: ['http://localhost:3000', 'http://127.0.0.1:3000'],
+    origin: process.env.NODE_ENV === 'production' ? 'https://multi-tenancy-phi.vercel.app' : 'http://localhost:3000',
     credentials: true,
     preflightContinue: false,
   }),

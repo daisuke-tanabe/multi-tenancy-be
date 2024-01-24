@@ -8,7 +8,7 @@
   "packageManager": "npm@10.2.4",
   "scripts": {
     "build": "tsc --noEmit false",
-    "dev": "node --env-file=.env --import tsx --watch src/app.ts",
+    "dev": "node NODE_ENV=development --env-file=.env --import tsx --watch src/app.ts",
     "format": "prettier --write \"./**/*.{js,ts,md}\"",
     "lint": "run-s -c lint:*",
     "lint:eslint": "eslint \"src/**/*.ts\"",
