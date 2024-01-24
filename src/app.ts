@@ -4,7 +4,7 @@ import express from 'express';
 
 import { routes } from './routes';
 
-const port = process.env.PORT || 3001;
+const port = 8080;
 const app = express();
 
 app.use(

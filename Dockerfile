@@ -1,4 +1,4 @@
-FROM node:20 AS base
+FROM --platform=linux/amd64 node:20 AS base
 
 WORKDIR /app
 
@@ -9,4 +9,6 @@ RUN npm i -g pm2
 
 RUN npm run build
 
-CMD ["pm2-runtime", "start", "./ecosystem.config.cjs" ]
+EXPOSE 8080
+
+CMD ["pm2-runtime", "start", "ecosystem.config.cjs"]
