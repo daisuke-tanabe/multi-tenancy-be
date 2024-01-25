@@ -1,14 +1,14 @@
 import { CognitoJwtVerifier } from 'aws-jwt-verify';
 import { Request, Response, NextFunction } from 'express';
 
-import { ash } from '../lib';
+import {ash, AppError} from '../lib';
 import {CognitoIdTokenPayload} from "aws-jwt-verify/jwt-model";
 import {jwtDecode} from "jwt-decode";
 
 export const jwtVerifier = ash(async (req: Request, res: Response, next: NextFunction) => {
   const idToken: string | undefined = req.cookies['session'];
 
-  if (!idToken) throw new Error('Invalid Token');
+  if (!idToken) throw new AppError('トークンのないリクエストです', { statusCode: 401 });
 
   const jwtPayload: CognitoIdTokenPayload = jwtDecode(idToken);
   // TODO 超適当

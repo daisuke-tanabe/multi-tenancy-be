@@ -2,6 +2,7 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express from 'express';
 
+import { errorResponder } from './middleware';
 import { routes } from './routes';
 
 const port = 8080;
@@ -18,6 +19,8 @@ app.use(
 );
 
 app.use(routes);
+
+app.use(errorResponder);
 
 app.listen(port, () => {
   console.info(`bff running on ${port}`);
