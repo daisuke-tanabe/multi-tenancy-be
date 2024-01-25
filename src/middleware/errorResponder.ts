@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import {AppError} from "../lib";
+import {AppError, isObject, isResponseMetadata} from "../lib";
 
 /**
  * errorResponder
@@ -16,9 +16,10 @@ export function errorResponder(error: unknown, req: Request, res: Response, next
     'content-type': 'application/problem+json'
   });
 
-  if (error instanceof Error && '$metadata' in error) {
-    res.status(401).json({
-      error: { message: 'Unauthorized' },
+  if (isResponseMetadata(error)) {
+    // NOTE: AWSのエラーは$metadataと__typeを含む
+    res.status(error.$metadata.httpStatusCode ?? 500).json({
+      error: { message: error.__type },
     });
   } else if (error instanceof AppError) {
     res.status(error.statusCode).json({

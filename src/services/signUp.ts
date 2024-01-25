@@ -4,15 +4,16 @@ import {
   AdminInitiateAuthCommand,
   AdminInitiateAuthRequest,
   AdminRespondToAuthChallengeCommand,
-  AdminRespondToAuthChallengeRequest,
+  AdminRespondToAuthChallengeRequest, AssociateSoftwareTokenCommand,
   CognitoIdentityProviderClient, DescribeUserPoolClientCommand,
   ListUserPoolClientsCommand,
 } from '@aws-sdk/client-cognito-identity-provider';
 
-import {ash, cognitoClient, createCognitoSecretHash} from '../lib';
+import {AppError, ash, cognitoClient, createCognitoSecretHash, isResponseMetadata} from '../lib';
 import {jwtDecode} from "jwt-decode";
 import {createHmac} from "crypto";
 import {CognitoIdTokenPayload} from "aws-jwt-verify/jwt-model";
+import {ResponseMetadata} from "@smithy/types/dist-types/response";
 
 type ReqBody = {
   tenantId: string;
@@ -21,8 +22,11 @@ type ReqBody = {
   newPassword: string;
 };
 
-type ResBody = {
-  id: string;
+type ResponseBody = {
+  // challengeName: string;
+  // qrCodeUrl?: string;
+  nextStep?: string;
+  session?: string;
 };
 
 function initiateAuthRequest(
@@ -68,7 +72,7 @@ function authChallengeRequest(
 /**
  * ユーザーサインアップ
  */
-export const signUp = ash(async (req: Request<unknown, unknown, ReqBody>, res: Response<ResBody>) => {
+export const signUp = ash(async (req: Request<unknown, unknown, ReqBody>, res: Response<ResponseBody>) => {
   const { tenantId, email, currentPassword, newPassword } = req.body;
   const userPoolId = `ap-northeast-1_${tenantId}`;
 
@@ -106,14 +110,13 @@ export const signUp = ash(async (req: Request<unknown, unknown, ReqBody>, res: R
    * セッションを使って新しいパスワードを登録
    */
   const authChallengeRequestResponse = await authChallengeRequest(cognitoClient, { tenantId, clientId, clientSecret, email, newPassword, session });
-  if (!authChallengeRequestResponse.AuthenticationResult?.IdToken) throw new Error('トークンが返却されませんでした');
 
   /**
-   * subをidとして返却する
+   * 引き続きMFA＿SETUPをする
+   * 状態が多要素認証のセットアップ = MFA_SETUP
    */
-  const { IdToken } = authChallengeRequestResponse.AuthenticationResult;
-  const jwtPayload: CognitoIdTokenPayload = jwtDecode(IdToken);
-  res.json({
-    id: jwtPayload.sub,
+  res.status(200).json({
+    nextStep: authChallengeRequestResponse.ChallengeName,
+    session: authChallengeRequestResponse.Session
   });
 });
