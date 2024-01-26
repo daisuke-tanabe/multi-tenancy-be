@@ -6,6 +6,6 @@ export * from './fetchUserPoolClientSecret.js';
 // カスタムクラス
 export * from './AppError.js';
 
-export * from './typeGuards'
+export * from './typeGuards';
 
-export * from './logger'
+export * from './logger';

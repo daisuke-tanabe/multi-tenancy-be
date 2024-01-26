@@ -1,2 +1,2 @@
 export * from './errorResponder';
-export * from './jwtVerifier'
+export * from './jwtVerifier';

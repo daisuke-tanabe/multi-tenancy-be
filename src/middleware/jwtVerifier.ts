@@ -1,12 +1,12 @@
 import { CognitoJwtVerifier } from 'aws-jwt-verify';
+import { CognitoIdTokenPayload } from 'aws-jwt-verify/jwt-model';
 import { Request, Response, NextFunction } from 'express';
+import { jwtDecode } from 'jwt-decode';
 
-import {ash, AppError} from '../lib';
-import {CognitoIdTokenPayload} from "aws-jwt-verify/jwt-model";
-import {jwtDecode} from "jwt-decode";
+import { ash, AppError } from '../lib';
 
 export const jwtVerifier = ash(async (req: Request, res: Response, next: NextFunction) => {
-  const idToken: string | undefined = req.cookies['session'];
+  const idToken: string | undefined = req.cookies.session;
 
   if (!idToken) throw new AppError('トークンのないリクエストです', { statusCode: 401 });
 
@@ -16,9 +16,9 @@ export const jwtVerifier = ash(async (req: Request, res: Response, next: NextFun
   const clientId = jwtPayload.aud;
 
   const verifier = CognitoJwtVerifier.create({
-    userPoolId: userPoolId,
+    userPoolId,
     tokenUse: 'id',
-    clientId: clientId,
+    clientId,
   });
 
   // 認証に成功すれば後続処理、失敗すれば上位でエラーをキャッチする

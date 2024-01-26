@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import { health } from '../services'
+import { health } from '../services';
 
 export const healthRouter = Router();
 

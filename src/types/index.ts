@@ -1,3 +1,3 @@
-import {MetadataBearer} from "@smithy/types/dist-types/response";
+import { MetadataBearer } from '@smithy/types/dist-types/response';
 
-export type CognitoError = Error & MetadataBearer & { __type: string }
+export type CognitoError = Error & MetadataBearer & { __type: string };

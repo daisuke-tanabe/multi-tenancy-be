@@ -1,5 +1,6 @@
+import { createHmac } from 'node:crypto';
+
 import { CognitoIdentityProviderClient } from '@aws-sdk/client-cognito-identity-provider';
-import {createHmac} from "node:crypto";
 
 export const cognitoClient = new CognitoIdentityProviderClient({
   credentials: {

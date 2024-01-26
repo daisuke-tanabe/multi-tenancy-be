@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import { invite } from '../services'
+import { invite } from '../services';
 
 export const inviteRouter = Router();
 

@@ -1,7 +1,9 @@
+import { createHmac } from 'crypto';
+
+import { AdminRespondToAuthChallengeCommand } from '@aws-sdk/client-cognito-identity-provider';
 import { Request, Response } from 'express';
-import {ash, cognitoClient, fetchUserPoolClientId, fetchUserPoolClientSecret} from "../lib";
-import {AdminRespondToAuthChallengeCommand} from "@aws-sdk/client-cognito-identity-provider";
-import {createHmac} from "crypto";
+
+import { ash, cognitoClient, fetchUserPoolClientId, fetchUserPoolClientSecret } from '../lib';
 
 type ReqBody = {
   tenantId: string;
@@ -37,10 +39,10 @@ export const newPasswordRequired = ash(async (req: Request<unknown, unknown, Req
     },
     Session: session,
   });
-  const adminRespondToAuthChallengeCommandOutput = await cognitoClient.send(adminRespondToAuthChallengeCommand)
+  const adminRespondToAuthChallengeCommandOutput = await cognitoClient.send(adminRespondToAuthChallengeCommand);
 
   res.status(200).json({
     nextStep: adminRespondToAuthChallengeCommandOutput.ChallengeName,
-    session: adminRespondToAuthChallengeCommandOutput.Session
+    session: adminRespondToAuthChallengeCommandOutput.Session,
   });
 });

@@ -7,7 +7,7 @@ import {
   mfaSetup,
   softwareTokenMfa,
   newPasswordRequired,
-  mfaVerify
+  mfaVerify,
 } from '../services';
 
 export const authRouter = Router();
@@ -19,4 +19,4 @@ authRouter
   .post('/mfa-setup', mfaSetup)
   .post('/mfa-verify', mfaVerify)
   .post('/software-token-mfa', softwareTokenMfa)
-  .post('/new-password-required', newPasswordRequired)
+  .post('/new-password-required', newPasswordRequired);

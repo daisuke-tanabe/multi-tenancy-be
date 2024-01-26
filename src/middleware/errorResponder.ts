@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
-import {AppError, logger, isResponseCognitoError} from "../lib";
+
+import { AppError, logger, isResponseCognitoError } from '../lib';
 
 /**
  * errorResponder
@@ -15,7 +16,7 @@ export function errorResponder(error: unknown, req: Request, res: Response, next
   logger.error(error);
 
   res.header({
-    'content-type': 'application/problem+json'
+    'content-type': 'application/problem+json',
   });
 
   if (isResponseCognitoError(error)) {
@@ -25,11 +26,11 @@ export function errorResponder(error: unknown, req: Request, res: Response, next
         name: error.__type,
       },
     });
-  } else if (error instanceof AppError) {
+  } if (error instanceof AppError) {
     return res.status(error.statusCode ?? 500).json({
       error: {
         message: error.message,
-        name: error.name
+        name: error.name,
       },
     });
   }
@@ -37,7 +38,7 @@ export function errorResponder(error: unknown, req: Request, res: Response, next
   res.status(503).json({
     error: {
       message: 'Exception error',
-      name: 'ExceptionError'
+      name: 'ExceptionError',
     },
   });
 

@@ -1,10 +1,10 @@
+
+import { AdminCreateUserCommand } from '@aws-sdk/client-cognito-identity-provider';
+import { CognitoIdTokenPayload } from 'aws-jwt-verify/jwt-model';
 import { Request, Response } from 'express';
+import { jwtDecode } from 'jwt-decode';
 
-import {AdminCreateUserCommand} from '@aws-sdk/client-cognito-identity-provider';
-
-import {ash, cognitoClient, createCognitoSecretHash} from '../lib';
-import {CognitoIdTokenPayload} from "aws-jwt-verify/jwt-model";
-import {jwtDecode} from "jwt-decode";
+import { ash, cognitoClient, createCognitoSecretHash } from '../lib';
 
 type ReqBody = {
   email: string;
@@ -21,7 +21,7 @@ type ResBody = {
  * @param email - 招待したい人のメールアドレス
  */
 export const invite = ash(async (req: Request<unknown, unknown, ReqBody>, res: Response<ResBody>) => {
-  const idToken: string = req.cookies['session'];
+  const idToken: string = req.cookies.session;
   const { email } = req.body;
 
   const jwtPayload: CognitoIdTokenPayload = jwtDecode(idToken);
@@ -33,7 +33,7 @@ export const invite = ash(async (req: Request<unknown, unknown, ReqBody>, res: R
     Username: email,
     UserAttributes: [
       {
-        Name: "custom:tenant_id",
+        Name: 'custom:tenant_id',
         Value: userPoolId.replace('ap-northeast-1_', ''),
       },
     ],
@@ -44,6 +44,6 @@ export const invite = ash(async (req: Request<unknown, unknown, ReqBody>, res: R
 
   res.status(200).json({
     name: response?.User?.Username,
-    status: response?.User?.UserStatus
+    status: response?.User?.UserStatus,
   });
 });

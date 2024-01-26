@@ -1,6 +1,7 @@
+import { AdminInitiateAuthCommand } from '@aws-sdk/client-cognito-identity-provider';
 import { Request, Response } from 'express';
-import {ash, cognitoClient, createCognitoSecretHash, fetchUserPoolClientId, fetchUserPoolClientSecret} from "../lib";
-import {AdminInitiateAuthCommand} from "@aws-sdk/client-cognito-identity-provider";
+
+import { ash, cognitoClient, createCognitoSecretHash, fetchUserPoolClientId, fetchUserPoolClientSecret } from '../lib';
 
 type ReqBody = {
   tenantId: string;
@@ -27,15 +28,13 @@ export const signIn = ash(async (req: Request<unknown, unknown, ReqBody>, res: R
     AuthParameters: {
       USERNAME: email,
       PASSWORD: password,
-      SECRET_HASH: createCognitoSecretHash({ email, clientId, clientSecret}),
+      SECRET_HASH: createCognitoSecretHash({ email, clientId, clientSecret }),
     },
   });
-  const adminInitiateAuthCommandOutput = await cognitoClient.send(adminInitiateAuthCommand)
+  const adminInitiateAuthCommandOutput = await cognitoClient.send(adminInitiateAuthCommand);
 
-  res
-    .status(200)
-    .json({
-      nextStep: adminInitiateAuthCommandOutput.ChallengeName,
-      session: adminInitiateAuthCommandOutput.Session,
-    })
+  res.status(200).json({
+    nextStep: adminInitiateAuthCommandOutput.ChallengeName,
+    session: adminInitiateAuthCommandOutput.Session,
+  });
 });

@@ -1,12 +1,11 @@
-import {
-  DescribeUserPoolClientCommand,
-} from "@aws-sdk/client-cognito-identity-provider";
-import {cognitoClient} from "./cognitoClient";
+import { DescribeUserPoolClientCommand } from '@aws-sdk/client-cognito-identity-provider';
+
+import { cognitoClient } from './cognitoClient';
 
 export async function fetchUserPoolClientSecret(userPoolId: string, clientId: string): Promise<string> {
   const describeUserPoolClientCommand = new DescribeUserPoolClientCommand({
     UserPoolId: userPoolId,
-    ClientId: clientId
+    ClientId: clientId,
   });
   const serviceOutputTypes = await cognitoClient.send(describeUserPoolClientCommand);
 
