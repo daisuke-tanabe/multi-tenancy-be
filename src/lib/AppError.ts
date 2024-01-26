@@ -2,7 +2,7 @@ export class AppError extends Error {
   readonly statusCode: number;
 
   constructor(message: Error['message'], options: ErrorOptions & {
-    statusCode: number,
+    statusCode?: number,
   }) {
     const { statusCode = 500, ...ops } = options;
 

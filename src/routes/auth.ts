@@ -1,13 +1,14 @@
 import { Router } from 'express';
 
-import { challenge, create, signIn, signUp, mfa, mfaVerification } from '../services';
+import { challenge, create, forceChangePassword, signIn, mfa, mfaSetup, newPasswordRequired } from '../services';
 
 export const authRouter = Router();
 
 authRouter
   .post('/create', create)
-  .post('/signup', signUp)
+  .post('/force-change-password', forceChangePassword)
   .post('/signin', signIn)
   .post('/mfa', mfa)
-  .post('/mfa-verification', mfaVerification)
+  .post('/mfa-setup', mfaSetup)
+  .post('/new-password-required', newPasswordRequired)
   .post('/challenge', challenge)

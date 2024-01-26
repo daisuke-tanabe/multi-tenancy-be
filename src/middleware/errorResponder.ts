@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import {AppError, isObject, isResponseMetadata} from "../lib";
+import {AppError, isObject, isResponseCognitoError} from "../lib";
 
 /**
  * errorResponder
@@ -16,10 +16,12 @@ export function errorResponder(error: unknown, req: Request, res: Response, next
     'content-type': 'application/problem+json'
   });
 
-  if (isResponseMetadata(error)) {
-    // NOTE: AWSのエラーは$metadataと__typeを含む
+  if (isResponseCognitoError(error)) {
     res.status(error.$metadata.httpStatusCode ?? 500).json({
-      error: { message: error.__type },
+      error: {
+        message: error.message,
+        type: error.__type,
+      },
     });
   } else if (error instanceof AppError) {
     res.status(error.statusCode).json({
