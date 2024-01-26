@@ -12,12 +12,12 @@ import {
   fetchUserPoolClientSecret
 } from "../lib";
 import {Request, Response} from "express";
+import {CognitoError} from "../types";
 
 type RequestBody = {
-  session: string;
+  session?: string;
   tenantId: string;
   email: string;
-  password: string;
   mfaCode: string;
 };
 
@@ -26,7 +26,13 @@ type ResponseBody = {
 }
 
 export const softwareTokenMfa = ash(async (req: Request<unknown, unknown, RequestBody>, res: Response<ResponseBody>) => {
-  const { tenantId, email, password, mfaCode, session } = req.body;
+  const { tenantId, email, mfaCode, session } = req.body;
+
+  // NOTE: 必要なパラメーターのいずれから空文字ならエラーにする
+  if (!tenantId || !email || !mfaCode || !session) {
+    throw new AppError('Missing required parameter', { statusCode: 400, name: 'InvalidParameterException' })
+  }
+
   const userPoolId = `ap-northeast-1_${tenantId}`;
 
   const clientId = await fetchUserPoolClientId(userPoolId);
@@ -43,7 +49,7 @@ export const softwareTokenMfa = ash(async (req: Request<unknown, unknown, Reques
       SECRET_HASH: createCognitoSecretHash({ email, clientId, clientSecret}),
     }
   });
-  const adminRespondToAuthChallengeCommandOutput = await cognitoClient.send(adminRespondToAuthChallengeCommand);
+  const adminRespondToAuthChallengeCommandOutput = await cognitoClient.send(adminRespondToAuthChallengeCommand)
 
   const idToken = adminRespondToAuthChallengeCommandOutput.AuthenticationResult?.IdToken;
   const expires = adminRespondToAuthChallengeCommandOutput.AuthenticationResult?.ExpiresIn;

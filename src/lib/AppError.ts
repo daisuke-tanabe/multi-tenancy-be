@@ -1,12 +1,16 @@
 export class AppError extends Error {
-  readonly statusCode: number;
+  readonly statusCode;
+  readonly name;
 
   constructor(message: Error['message'], options: ErrorOptions & {
     statusCode?: number,
+    name?: string;
   }) {
-    const { statusCode = 500, ...ops } = options;
+    const { statusCode = 500, name = 'Error', ...opts } = options;
 
-    super(message, ops);
+    super(message, opts);
+
     this.statusCode = statusCode;
+    this.name = name;
   }
 }

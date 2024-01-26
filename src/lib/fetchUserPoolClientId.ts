@@ -4,6 +4,10 @@ import {CognitoError} from "../types";
 import {AppError} from "./AppError";
 
 export async function fetchUserPoolClientId(userPoolId: string): Promise<string> {
+  /**
+   * API仕様
+   * https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/client/cognito-identity-provider/command/ListUserPoolClientsCommand/
+   */
   const listUserPoolClientsCommand = new ListUserPoolClientsCommand({
     UserPoolId: userPoolId,
     MaxResults: 1,
@@ -11,15 +15,23 @@ export async function fetchUserPoolClientId(userPoolId: string): Promise<string>
 
   const listUserPoolClients = await cognitoClient.send(listUserPoolClientsCommand)
     .catch((error: CognitoError) => {
-      // ユーザープールIDからクライントIDを特定する際にエラーが発生するとリソースネームが返却されるのでそれを防いでいる
-      throw new AppError('Invalid parameter', { statusCode: error.$metadata.httpStatusCode })
+      // NOTE: ユーザープールIDからクライントIDを特定する際にエラーが発生するとリソースネームが返却されるので無効なパラメーターというエラーを返して防ぐ
+      throw new AppError('Invalid parameter', { statusCode: 400, name: 'InvalidParameterException' })
     });
 
   const userPoolClients = listUserPoolClients.UserPoolClients;
-  if (!userPoolClients) throw new AppError('User pool client does not exist', { statusCode: 503 });
+
+  if (!userPoolClients) {
+    // NOTE: ユーザープールクライアントのリソースが特定できない場合
+    throw new AppError('Missing resource specified', { statusCode: 404, name: 'ResourceNotFoundException' })
+  }
 
   const clientId = userPoolClients[0].ClientId;
-  if (!clientId) throw new AppError('User pool client does not exist', { statusCode: 500 });
+
+  if (!clientId) {
+    // NOTE: ユーザープールクライアントIDが特定できない場合
+    throw new AppError('Missing resource specified', { statusCode: 404, name: 'ResourceNotFoundException' })
+  }
 
   return clientId;
 }

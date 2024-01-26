@@ -19,21 +19,27 @@ export function errorResponder(error: unknown, req: Request, res: Response, next
   });
 
   if (isResponseCognitoError(error)) {
-    res.status(error.$metadata.httpStatusCode ?? 500).json({
+    return res.status(error.$metadata.httpStatusCode ?? 500).json({
       error: {
         message: error.message,
-        type: error.__type,
+        name: error.__type,
       },
     });
   } else if (error instanceof AppError) {
-    res.status(error.statusCode).json({
-      error: { message: error.message },
-    });
-  } else {
-    res.status(503).json({
-      error: { message: 'InternalServerError' },
+    return res.status(error.statusCode ?? 500).json({
+      error: {
+        message: error.message,
+        name: error.name
+      },
     });
   }
+
+  res.status(503).json({
+    error: {
+      message: 'Exception error',
+      name: 'ExceptionError'
+    },
+  });
 
   next();
 }
