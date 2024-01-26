@@ -20,27 +20,29 @@ export function errorResponder(error: unknown, req: Request, res: Response, next
   });
 
   if (isResponseCognitoError(error)) {
-    return res.status(error.$metadata.httpStatusCode ?? 500).json({
+    res.status(error.$metadata.httpStatusCode ?? 500).json({
       error: {
         message: error.message,
+        // NOTE: Cognitoの返却するエラーレスポンスなので許可する
+        // eslint-disable-next-line no-underscore-dangle
         name: error.__type,
       },
     });
   } if (error instanceof AppError) {
-    return res.status(error.statusCode ?? 500).json({
+    res.status(error.statusCode ?? 500).json({
       error: {
         message: error.message,
         name: error.name,
       },
     });
+  } else {
+    res.status(503).json({
+      error: {
+        message: 'Exception error',
+        name: 'ExceptionError',
+      },
+    });
   }
-
-  res.status(503).json({
-    error: {
-      message: 'Exception error',
-      name: 'ExceptionError',
-    },
-  });
 
   next();
 }

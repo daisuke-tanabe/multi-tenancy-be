@@ -4,7 +4,7 @@ import { CognitoIdTokenPayload } from 'aws-jwt-verify/jwt-model';
 import { Request, Response } from 'express';
 import { jwtDecode } from 'jwt-decode';
 
-import { ash, cognitoClient, createCognitoSecretHash } from '../lib';
+import { ash, cognitoClient } from '../lib';
 
 type ReqBody = {
   email: string;
