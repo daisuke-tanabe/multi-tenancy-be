@@ -1,4 +1,3 @@
-export * from './challenge';
 export * from './create';
 export * from './forceChangePassword';
 export * from './health';
