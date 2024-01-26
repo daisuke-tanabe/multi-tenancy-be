@@ -53,12 +53,11 @@ export const softwareTokenMfa = ash(async (req: Request<unknown, unknown, Reques
       .status(200)
       .cookie('session', idToken,{
         httpOnly: true,
-        // expires: new Date(Date.now() + expires),
         secure: true,
         sameSite: 'lax'
       })
       .json({
-        nextStep: 'COMPLETE',
+        nextStep: 'SUCCESS',
       });
     return;
   }

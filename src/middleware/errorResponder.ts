@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import {AppError, isObject, isResponseCognitoError} from "../lib";
+import {AppError, logger, isResponseCognitoError} from "../lib";
 
 /**
  * errorResponder
@@ -12,6 +12,8 @@ import {AppError, isObject, isResponseCognitoError} from "../lib";
  * @param {NextFunction} next
  */
 export function errorResponder(error: unknown, req: Request, res: Response, next: NextFunction) {
+  logger.error(error);
+
   res.header({
     'content-type': 'application/problem+json'
   });
