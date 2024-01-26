@@ -19,9 +19,6 @@ module.exports = {
     // ブロックとステートメントの深さを制限する
     'max-depth': ['error', 3],
 
-    // パッケージ以外のインポートには拡張子を強制する
-    "import/extensions": ["error", "ignorePackages"],
-
     // import の順番ルールを定義する
     'import/order': [
       'error',
