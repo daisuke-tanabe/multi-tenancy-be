@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 
 import {AdminCreateUserCommand} from '@aws-sdk/client-cognito-identity-provider';
 
-import {ash, cognitoClient, createCognitoSecretHash} from '../lib';
+import {ash, cognitoClient,} from '../lib';
 
 type ReqBody = {
   userPoolId: string;

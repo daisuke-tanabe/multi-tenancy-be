@@ -1,10 +1,6 @@
 import { Request, Response } from 'express';
-import {ash, cognitoClient, createCognitoSecretHash, fetchUserPoolClientId, fetchUserPoolClientSecret} from "../lib";
-import {
-  AdminInitiateAuthCommand,
-  AdminInitiateAuthRequest, AdminRespondToAuthChallengeCommand,
-  AdminRespondToAuthChallengeRequest
-} from "@aws-sdk/client-cognito-identity-provider";
+import {ash, cognitoClient, fetchUserPoolClientId, fetchUserPoolClientSecret} from "../lib";
+import {AdminRespondToAuthChallengeCommand} from "@aws-sdk/client-cognito-identity-provider";
 import {createHmac} from "crypto";
 
 type ReqBody = {

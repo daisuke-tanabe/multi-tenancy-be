@@ -1,7 +1,5 @@
 import {
   AdminRespondToAuthChallengeCommand,
-  AssociateSoftwareTokenCommand,
-  VerifySoftwareTokenCommand
 } from "@aws-sdk/client-cognito-identity-provider";
 import {
   AppError,
@@ -12,7 +10,6 @@ import {
   fetchUserPoolClientSecret
 } from "../lib";
 import {Request, Response} from "express";
-import {CognitoError} from "../types";
 
 type RequestBody = {
   session?: string;

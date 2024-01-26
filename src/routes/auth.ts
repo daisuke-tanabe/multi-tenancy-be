@@ -1,7 +1,6 @@
 import { Router } from 'express';
 
 import {
-  challenge,
   create,
   forceChangePassword,
   signIn,
@@ -21,4 +20,3 @@ authRouter
   .post('/mfa-verify', mfaVerify)
   .post('/software-token-mfa', softwareTokenMfa)
   .post('/new-password-required', newPasswordRequired)
-  .post('/challenge', challenge)

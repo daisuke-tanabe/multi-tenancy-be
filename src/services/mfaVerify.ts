@@ -1,9 +1,7 @@
 import {
-  AdminRespondToAuthChallengeCommand,
-  AssociateSoftwareTokenCommand,
   VerifySoftwareTokenCommand
 } from "@aws-sdk/client-cognito-identity-provider";
-import {ash, cognitoClient, fetchUserPoolClientId, fetchUserPoolClientSecret} from "../lib";
+import {ash, cognitoClient} from "../lib";
 import {Request, Response} from "express";
 
 type RequestBody = {

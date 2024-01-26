@@ -1,4 +1,4 @@
-import {ListUserPoolClientsCommand, UserPoolClientDescription} from "@aws-sdk/client-cognito-identity-provider";
+import {ListUserPoolClientsCommand} from "@aws-sdk/client-cognito-identity-provider";
 import {cognitoClient} from "./cognitoClient";
 import {CognitoError} from "../types";
 import {AppError} from "./AppError";

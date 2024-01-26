@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import {ash, cognitoClient, createCognitoSecretHash, fetchUserPoolClientId, fetchUserPoolClientSecret} from "../lib";
-import {AdminInitiateAuthCommand, AdminInitiateAuthRequest} from "@aws-sdk/client-cognito-identity-provider";
+import {AdminInitiateAuthCommand} from "@aws-sdk/client-cognito-identity-provider";
 
 type ReqBody = {
   tenantId: string;
