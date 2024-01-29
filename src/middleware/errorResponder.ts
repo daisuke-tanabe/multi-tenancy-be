@@ -35,11 +35,11 @@ export function errorResponder(error: unknown, req: Request, res: Response, next
         name: error.name,
       },
     });
-  } else {
-    res.status(503).json({
+  } else if (error instanceof Error) {
+    res.status(500).json({
       error: {
-        message: 'Exception error',
-        name: 'ExceptionError',
+        message: '予期しないエラーが発生しました',
+        name: error.name,
       },
     });
   }
